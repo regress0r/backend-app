@@ -1,0 +1,16 @@
+{
+  "name": "full_backend",
+  "version": "1.0.0",
+  "description": "A backend Web application.",
+  "keywords": [
+    "javascript",
+    "backend"
+  ],
+  "license": "ISC",
+  "author": "Nayan Sonkusare",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
