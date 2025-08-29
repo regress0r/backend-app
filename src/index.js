@@ -8,7 +8,22 @@ dotenv.config({
   Path: "./env",
 });
 
-connectDB();
+// async await returns promise
+connectDB()
+  .then(() => {
+    app.on("error", (error) => {
+      console.log("ERROR: ", error);
+      throw error;
+    });
+
+    app.listen(process.env.PORT || 8000, () => {
+      console.log(`Server is running on port ${process.env.PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("Error connecting to MongoDB:", err);
+    throw err;
+  });
 
 /*
 import express from "express";
