@@ -17,7 +17,8 @@ const registerUser = asyncHandler(async (req, res) => {
   // return/send response.
 
   const { username, email, fullName, password } = req.body;
-  console.log("Email: ", email, "Password: ", password);
+  // console.log(req.body);
+  // console.log("Email: ", email, "Password: ", password);
 
   // To check if any field is missing or empty.
   if (
@@ -40,8 +41,17 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   // console.log(req.files?)
-  const avatarLocalPath = req.files?.avatar[0]?.path;
-  const coverImageLocalPath = req.files?.coverImage[0]?.path;
+
+  const avatarLocalPath = req.files?.avatar?.[0]?.path;
+
+  const coverImageLocalPath = req.files?.coverImage?.[0]?.path;
+
+  // let coverImageLocalPath;
+  // if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
+  //   coverImageLocalPath = req.files.coverImage[0].path;
+  // }
+  // console.log(req.files);
+  // console.table(req.files);
 
   if (!avatarLocalPath) {
     throw new ApiError(400, "Avatar is required.");
@@ -61,9 +71,11 @@ const registerUser = asyncHandler(async (req, res) => {
     fullName,
     avatar: avatar.url, // url of cloudinary
     coverImage: coverImage?.url || "", // haven't check if coverImage is uploaded successfully or not. so optional chaining is used, so that if coverImage is not uploaded, then it will not throw error.
+    password,
     email,
     username: username.toLowerCase(),
   });
+  // console.log(user);
 
   // check user creation status.
   const createdUser = await User.findById(user._id).select(
