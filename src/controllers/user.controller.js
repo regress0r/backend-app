@@ -276,7 +276,7 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All fields are required.");
   }
 
-  const user = User.findOneAndUpdate(
+  const user = await User.findOneAndUpdate(
     req.user?._id,
     {
       $set: {
@@ -294,9 +294,12 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
 
 const updateUserAvatar = asyncHandler(async (req, res) => {
   const avatarLocalPath = req.file?.path;
+
   if (!avatarLocalPath) {
     throw new ApiError(400, "Avatar  file is missing.");
   }
+
+  // TODO: Delete old avatar image from cloudinary by xreating a seperate utility function. V-19_ 2
 
   const avatar = await uploadOnCloudinary(avatarLocalPath);
 
@@ -312,7 +315,7 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
       },
     },
     { new: true }
-  ).selsct("-password");
+  ).select("-password");
 
   return res
     .status(200)
